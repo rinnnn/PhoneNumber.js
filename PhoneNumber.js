@@ -14,6 +14,8 @@ var PhoneNumber = (function (dataBase) {
   var NON_DIALABLE_CHARS = /[^,#+\*\d]/g;
   var PLUS_CHARS = "+\uFF0B";
   var BACKSLASH = /\\/g;
+  var COMMACOMMA = /,,/g;
+  var COMMABRACKET = /,]/g;
   var SPLIT_FIRST_GROUP = /^(\d+)(.*)$/;
 
   /**
@@ -140,7 +142,7 @@ var PhoneNumber = (function (dataBase) {
   // Parse string encoded meta data into a convenient object
   // representation.
   function ParseMetaData(countryCode, md) {
-    var array = eval(md.replace(BACKSLASH, "\\\\"));
+    var array = JSON.parse(md.replace(BACKSLASH, "\\\\").replace(COMMACOMMA, ', null,').replace(COMMACOMMA, ', null,').replace(COMMABRACKET, ', null]'));
     md = ParseArray(array,
                     META_DATA_ENCODING,
                     { countryCode: countryCode });
